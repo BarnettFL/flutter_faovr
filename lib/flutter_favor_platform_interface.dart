@@ -23,7 +23,16 @@ abstract class FlutterFavorPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+  Future<String?> version() {
+    throw UnimplementedError('version() has not been implemented.');
   }
+
+  Future<Error?> start(String jsonConfig) {
+    throw UnimplementedError('start(String jsonConfig) has not been implemented.');
+  }
+
+  Future<Error?> stop() {
+    throw UnimplementedError('start() has not been implemented.');
+  }
+
 }

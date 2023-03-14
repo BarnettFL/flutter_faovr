@@ -17,7 +17,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _flutterFavorPlugin = FlutterFavor();
+  final _flutterFavorPlugin = FlutterFavor(
+      networkId: 19,
+      bootNodes: [""],
+      chainEndpoint: '',
+      oracleContractAddress: '',
+      dataPath: '',
+  );
 
   @override
   void initState() {
@@ -32,9 +38,9 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _flutterFavorPlugin.getPlatformVersion() ?? 'Unknown platform version';
+          await _flutterFavorPlugin.version() ?? 'Unknown version';
     } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      platformVersion = 'Failed to get version.';
     }
 
     // If the widget was removed from the tree while the asynchronous platform

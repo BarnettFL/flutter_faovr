@@ -17,13 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _flutterFavorPlugin = FlutterFavor(
-      networkId: 19,
-      bootNodes: [""],
-      chainEndpoint: '',
-      oracleContractAddress: '',
-      dataPath: '',
-  );
+  final _flutterFavorPlugin = FlutterFavor();
 
   @override
   void initState() {
@@ -38,7 +32,7 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _flutterFavorPlugin.version() ?? 'Unknown version';
+          await _flutterFavorPlugin.version();
     } on PlatformException {
       platformVersion = 'Failed to get version.';
     }

@@ -10,21 +10,18 @@ class MethodChannelFlutterFavor extends FlutterFavorPlatform {
   final methodChannel = const MethodChannel('flutter_favor');
 
   @override
-  Future<String?> version() async {
+  Future<String> version() async {
     final version = await methodChannel.invokeMethod<String>('version');
-    return version;
+    return Future.value(version);
   }
 
   @override
-  Future<Error?> start(String jsonConfig) async {
-    final error = await methodChannel.invokeMethod<Error>('start', jsonConfig);
-    return error;
+  Future start(String jsonConfig) async {
+    await methodChannel.invokeMethod<Error>('start', jsonConfig);
   }
 
   @override
-  Future<Error?> stop() async {
-    final error = await methodChannel.invokeMethod<Error>('stop');
-    return error;
+  Future stop() async {
+    await methodChannel.invokeMethod<Error>('stop');
   }
-
 }

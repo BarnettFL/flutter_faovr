@@ -24,11 +24,13 @@ public class FlutterFavorPlugin: NSObject, FlutterPlugin {
       do {
           let decoder = JSONDecoder()
           optionsObj = try decoder.decode(Options.self, from: jsonData)
+          start(o: optionsObj, result: result)
       } catch  {
-          result(error)
+          result(FlutterError.init(code: "500",
+                                   message: error.localizedDescription,
+                                   details: nil))
           break
       }
-      result(self.start(o: optionsObj))
       break
     case "stop":
       self.stop(result: result)
@@ -42,8 +44,11 @@ public class FlutterFavorPlugin: NSObject, FlutterPlugin {
       if node != nil {
           do {
               try node!.stop()
+              node = nil
           } catch {
-              result(error)
+              result(FlutterError.init(code: "500",
+                                       message: error.localizedDescription,
+                                       details: nil))
               return
           }
       }
@@ -158,7 +163,7 @@ public class FlutterFavorPlugin: NSObject, FlutterPlugin {
   }
   
 
-  private func start(o: Options) -> NSError? {
+  private func start(o: Options, result: FlutterResult) {
       let options = MobileOptions()
       // api setting
       options.apiPort = o.apiPort
@@ -172,8 +177,15 @@ public class FlutterFavorPlugin: NSObject, FlutterPlugin {
       options.proxyPort = o.proxyPort
       
       // group setting
-      let data: Data = try! JSONSerialization.data(withJSONObject: o.groups)
-      options.group = String(data: data, encoding: String.Encoding.utf8)!
+      do {
+          let data: Data = try JSONSerialization.data(withJSONObject: o.groups)
+          options.group = String(data: data, encoding: String.Encoding.utf8)!
+      }catch {
+          result(FlutterError.init(code: "500",
+                                   message: error.localizedDescription,
+                                   details: nil))
+          return
+      }
       
       // p2p setup
       options.networkID = o.networkId
@@ -211,8 +223,10 @@ public class FlutterFavorPlugin: NSObject, FlutterPlugin {
       var error: NSError?
       node = FavorX.MobileNewNode(options, &error)
       if error != nil {
-          return error
+          result(FlutterError.init(code: "500",
+                                   message: error!.localizedDescription,
+                                   details: nil))
       }
-      return nil
+      result(nil)
   }
 }

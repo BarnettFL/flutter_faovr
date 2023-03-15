@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_favor/flutter_favor.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _flutterFavorPlugin = FlutterFavor();
+  FlutterFavor favor = FlutterFavor();
 
   @override
   void initState() {
@@ -27,13 +27,19 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
+    favor.dataPath = (await getApplicationSupportDirectory()).path;
+    favor.networkId = 1;
+    favor.bootNodes = "";
+    favor.chainEndpoint = "";
+    favor.oracleContractAddress = "";
+
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await _flutterFavorPlugin.version();
-    } on PlatformException {
+      platformVersion = await favor.version();
+    } catch (e) {
+      print(e);
       platformVersion = 'Failed to get version.';
     }
 

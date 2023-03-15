@@ -21,7 +21,7 @@ class FlutterFavor {
   late num binMaxPeers = 50;
   late num lightMaxPeers = 100;
   late num cacheCapacity = 4 * 1024;
-  late List<String> bootNodes;
+  late String bootNodes;
   late bool devMode = false;
   late bool fullNode = false;
   late String chainEndpoint;
@@ -83,8 +83,8 @@ class FlutterFavor {
   Future readAdnWriteTLS() async {
     String dir = "$dataPath/cert";
 
-    String ca = await rootBundle.loadString("assets/cert/ca.pem");
-    String key = await rootBundle.loadString("assets/cert/ca_key.pem");
+    String ca = await rootBundle.loadString("packages/flutter_favor/cert/ca.pem");
+    String key = await rootBundle.loadString("packages/flutter_favor/cert/ca_key.pem");
 
     if (!Directory(dir).existsSync()) {
       await Directory(dir).create(recursive: true);

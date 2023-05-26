@@ -9,7 +9,21 @@ class MockFlutterFavorPlatform
     implements FlutterFavorPlatform {
 
   @override
-  Future<String?> getPlatformVersion() => Future.value('42');
+  Future start(String jsonConfig) {
+    // TODO: implement start
+    throw UnimplementedError();
+  }
+
+  @override
+  Future stop() {
+    // TODO: implement stop
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> version() {
+    return Future.value('42');
+  }
 }
 
 void main() {
@@ -19,11 +33,11 @@ void main() {
     expect(initialPlatform, isInstanceOf<MethodChannelFlutterFavor>());
   });
 
-  test('getPlatformVersion', () async {
+  test('version', () async {
     FlutterFavor flutterFavorPlugin = FlutterFavor();
     MockFlutterFavorPlatform fakePlatform = MockFlutterFavorPlatform();
     FlutterFavorPlatform.instance = fakePlatform;
 
-    expect(await flutterFavorPlugin.getPlatformVersion(), '42');
+    expect(await flutterFavorPlugin.version(), '42');
   });
 }
